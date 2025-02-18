@@ -2,12 +2,12 @@ const express = require("express");
 const userRouter = express.Router();
 const userModel = require("../models/user");
 const Applied = require("../models/Applied");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs"); // Use bcryptjs instead of bcrypt
 const jwt = require("jsonwebtoken");
 const appliedOpportunity = require("../models/Applied");
 const auth = require("../middlewares/auth");
 
-
+// Signup Route
 userRouter.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
   const user = await userModel.findOne({ email });
@@ -20,25 +20,22 @@ userRouter.post("/signup", async (req, res) => {
   res.status(201).json({ message: "User  created successfully" });
 });
 
-
+// Login Route
 userRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await userModel.findOne({ email });
   if (!user) {
-    return res.status(401).json({ status: false, message: "User  does not exist" });
+    return res.status(401).json({ message: "User  does not exist" });
   }
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    return res.status(401).json({ status: false, message: "Invalid credentials" });
+    return res.status(401).json({ message: "Invalid credentials" });
   }
   const token = jwt.sign({ email: user.email }, "jwtkey", { expiresIn: "4h" });
-  res.cookie("token", token, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "Lax",
-  });
-  res.status(201).json({ status: true, message: "User  logged in successfully", token });
+  res.cookie("token", token, { httpOnly: true, secure: false, sameSite: "Lax" });
+  res.status(201).json({ message: "User  logged in successfully", token });
 });
+
 
 // Apply Route
 userRouter.post("/apply", auth, async (req, res) => {
