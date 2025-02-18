@@ -14,7 +14,7 @@ app.use(cookieParser());
 app.use("/auth", userRouter);
 
 
-mongoose.connect("mongodb://127.0.0.1:27017/internshipportal").then(() => {
+mongoose.connect("mongodb+srv://test:test@cluster0.l7dbh.mongodb.net/internshipportal").then(() => {
     console.log("Connected to MongoDB");
 });
 
