@@ -99,7 +99,7 @@ userRouter.post("/logout", auth, (req, res) => {
     res.clearCookie("token", {
       httpOnly: true,
       secure: true,
-      sameSite: "Lax"
+      sameSite: "None"
     });
     res.status(200).json({ status: true, message: "Logged out successfully" });
   } catch (error) {
