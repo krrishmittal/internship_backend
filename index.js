@@ -6,8 +6,8 @@ const cors = require("cors");
 
 const app = express();
 app.use(cors({
-    origin: 'https://internifyin.netlify.app', // Your frontend URL
-    credentials: true // Allow credentials
+    origin: 'https://internship-frontend-cpfg.onrender.com', 
+    credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
