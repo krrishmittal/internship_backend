@@ -6,7 +6,7 @@ const cors = require("cors");
 
 const app = express();
 app.use(cors({
-    origin: 'https://chic-kelpie-a8e23a.netlify.app', // Your frontend URL
+    origin: 'https://internifyin.netlify.app', // Your frontend URL
     credentials: true // Allow credentials
 }));
 app.use(express.json());
