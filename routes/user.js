@@ -2,10 +2,12 @@ const express = require("express");
 const userRouter = express.Router();
 const userModel = require("../models/user");
 const Applied = require("../models/Applied");
-const bcrypt = require("bcryptjs"); // Use bcryptjs instead of bcrypt
+const bcrypt = require("bcryptjs"); 
 const jwt = require("jsonwebtoken");
 const appliedOpportunity = require("../models/Applied");
 const auth = require("../middlewares/auth");
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' }); 
 
 // Signup Route
 userRouter.post("/signup", async (req, res) => {
@@ -32,30 +34,54 @@ userRouter.post("/login", async (req, res) => {
     return res.status(401).json({ message: "Invalid credentials" });
   }
   const token = jwt.sign({ email: user.email }, "jwtkey", { expiresIn: "4h" });
-  res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "None" });
+  res.cookie("token", token, { httpOnly: true, secure: false, sameSite: "None" });
   res.status(201).json({ message: "User  logged in successfully", token });
 });
 
-
-// Apply Route
-userRouter.post("/apply", auth, async (req, res) => {
+userRouter.post("/apply", auth, upload.single('resume'), async (req, res) => {
   try {
-    const { opportunityId, title, company_name, duration } = req.body;
+    const {
+      id,
+      title,
+      company_name,
+      duration,
+      fullName,
+      email,
+      phone,
+      degree,
+      fieldOfStudy,
+      university,
+      graduationDate,
+      skills
+    } = req.body;
     const userId = req.user.email;
-    const alreadyApplied = await appliedOpportunity.findOne({
+    if (!id) {
+      return res.status(400).json({ message: "Opportunity ID is required" });
+    }
+    const alreadyApplied = await Applied.findOne({
       userId,
-      id: opportunityId,
+      id,
     });
     if (alreadyApplied) {
       return res.status(400).json({ message: "You have already applied for this opportunity" });
     }
-    const newAppliedOpportunity = new appliedOpportunity({
+    const newAppliedOpportunity = new Applied({
       userId,
-      id: opportunityId,
+      id,
       title,
       company_name,
       duration,
+      fullName,
+      email,
+      phone,
+      degree,
+      fieldOfStudy,
+      university,
+      graduationDate,
+      skills,
+      resumePath: req.file ? req.file.path : null,
     });
+
     await newAppliedOpportunity.save();
     res.status(201).json({ message: "Opportunity applied successfully" });
   } catch (error) {
@@ -284,6 +310,33 @@ userRouter.get("/search", auth, async (req, res) => {
   } catch (error) {
       console.error("Error searching opportunities:", error);
       return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+userRouter.post("/apply", auth, upload.single('resume'), async (req, res) => {
+  try {
+    const { opportunityId, title, company_name, duration, skills } = req.body;
+    const userId = req.user.email;
+
+    // Handle the uploaded file (req.file) as needed
+    // For example, you might want to save the file path in the database
+
+    // Your existing application logic...
+    const newAppliedOpportunity = new appliedOpportunity({
+      userId,
+      opportunityId,
+      title,
+      company_name,
+      duration,
+      skills,
+      resumePath: req.file.path, // Save the file path if needed
+    });
+
+    await newAppliedOpportunity.save();
+    res.status(201).json({ message: "Opportunity applied successfully" });
+  } catch (error) {
+    console.error("Error in apply route:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

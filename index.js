@@ -6,6 +6,7 @@ const cors = require("cors");
 
 const app = express();
 app.use(cors({
+    // origin: "http://localhost:3000",
     origin: 'https://internship-frontend-cpfg.onrender.com', 
     credentials: true
 }));

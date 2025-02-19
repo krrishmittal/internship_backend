@@ -18,8 +18,44 @@ const AppliedSchema = new mongoose.Schema({
         required: true,
     },
     duration: {
-        type: String, // Change this to String
+        type: String,
         required: true,
+    },
+    fullName: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+    },
+    phone: {
+        type: String,
+        required: true,
+    },
+    degree: {
+        type: String,
+        required: true,
+    },
+    fieldOfStudy: {
+        type: String,
+        required: true,
+    },
+    university: {
+        type: String,
+        required: true,
+    },
+    graduationDate: {
+        type: Date,
+        required: true,
+    },
+    skills: {
+        type: String,
+        required: true,
+    },
+    resumePath: {
+        type: String,
+        required: false,
     },
 });
 
