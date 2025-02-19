@@ -6,7 +6,11 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+const cors = require('cors');
+app.use(cors({
+    origin: 'https://chic-kelpie-a8e23a.netlify.app', // Your frontend URL
+    credentials: true // Allow credentials
+}));
 app.use(express.json());
 app.use(cookieParser());
 

@@ -184,7 +184,7 @@ userRouter.delete("/profile", auth, async (req, res) => {
     res.clearCookie("token", {
       httpOnly: true,
       secure: true,
-      sameSite: "Lax"
+      sameSite: "None"
     });
     res.status(200).json({ message: "User  and associated data deleted successfully" });
   } catch (error) {
@@ -208,7 +208,7 @@ userRouter.delete("/profile/:id", auth, async (req, res) => {
     res.clearCookie("token", {
       httpOnly: true,
       secure: true,
-      sameSite: "Lax"
+      sameSite: "None"
     });
     res.status(200).json({ message: "User  and associated data deleted successfully" });
   } catch (error) {
