@@ -32,7 +32,7 @@ userRouter.post("/login", async (req, res) => {
     return res.status(401).json({ message: "Invalid credentials" });
   }
   const token = jwt.sign({ email: user.email }, "jwtkey", { expiresIn: "4h" });
-  res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "Lax" });
+  res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "None" });
   res.status(201).json({ message: "User  logged in successfully", token });
 });
 
