@@ -5,8 +5,6 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 const app = express();
-
-const cors = require('cors');
 app.use(cors({
     origin: 'https://chic-kelpie-a8e23a.netlify.app', // Your frontend URL
     credentials: true // Allow credentials
