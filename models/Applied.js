@@ -53,6 +53,10 @@ const AppliedSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    resume: {
+        type: Buffer,
+        required: true,
+    },
     resumePath: {
         type: String,
         required: false,

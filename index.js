@@ -13,14 +13,11 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-
 app.use("/auth", userRouter);
-
 
 mongoose.connect("mongodb+srv://test:test@cluster0.l7dbh.mongodb.net/internshipportal").then(() => {
     console.log("Connected to MongoDB");
 });
-
 
 app.listen(4000, () => {
     console.log("Server is running on port 4000");
